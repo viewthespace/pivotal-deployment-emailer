@@ -5,11 +5,7 @@ class DeliveredPivotalStoriesMailer < ActionMailer::Base
     attach_images
     @new_stories = new_stories
     @time_of_last_deployment = DateTime.parse(date_string)
-    unless (email_recipient = ENV["EMAIL_RECIPIENT"]).nil?
-      mail(to: email_recipient , subject: 'Updates Since Last Deployment')
-    else
-      mail(to: 'nathan.owen@viewthespace.com' , subject: 'Updates Since Last Deployment')
-    end
+    mail(to: ENV["EMAIL_RECIPIENT"] , subject: 'Updates Since Last Deployment')
   end
 
   def attach_images
