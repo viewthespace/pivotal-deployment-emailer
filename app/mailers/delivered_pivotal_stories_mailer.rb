@@ -13,14 +13,18 @@ class DeliveredPivotalStoriesMailer < ActionMailer::Base
   end
 
   def attach_images
-    attachments.inline['bug'] = {:data => File.read('app/assets/images/bug.png'),
-                                 :mime_type => "image/png"}
-    attachments.inline['chore'] = {:data => File.read('app/assets/images/chore.png'),
-                                   :mime_type => "image/png"}
-    attachments.inline['feature'] = {:data => File.read('app/assets/images/feature.png'),
-                                     :mime_type => "image/png"}
-    attachments.inline['release'] = {:data => File.read('app/assets/images/release.png'),
-                                     :mime_type => "image/png"}
+    attachments.inline['bug'] =
+        {:data => File.read('app/assets/images/bug.png'),
+         :mime_type => "image/png"}
+    attachments.inline['chore'] =
+        {:data => File.read('app/assets/images/chore.png'),
+         :mime_type => "image/png"}
+    attachments.inline['feature'] =
+        {:data => File.read('app/assets/images/feature.png'),
+         :mime_type => "image/png"}
+    attachments.inline['release'] =
+        {:data => File.read('app/assets/images/release.png'),
+         :mime_type => "image/png"}
   end
 
 end

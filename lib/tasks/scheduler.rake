@@ -1,11 +1,9 @@
 task :email_delivered_stories => :environment do
-  require 'deployment_email/delivered_stories_report.rb'
-  include DeliveredStoriesReport
+  reporter = DeliveredStoriesReport.new
   puts "Finding Delivered Stories"
-  deployment_date = get_time_of_last_deployment
-  stories = find_stories deployment_date, get_pivotal_api_token
-  print_stories stories
+  stories = reporter.find_stories
+  reporter.print_stories
   puts "Sending Email"
-  email_report stories, deployment_date
+  reporter.email_report
   puts "Done"
 end
