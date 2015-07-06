@@ -9,7 +9,7 @@ class DeliveredStoriesReport
     @new_stories =
       projects.map do |project|
         unless ["android", "ios", "mobile"].any? {|keyword| project.name.downcase.include? keyword}
-          Rails.logger.info "Gathering stories for " + project.name
+          puts "Gathering stories for " + project.name
           project.stories.all(:state => 'delivered', :modified_since => time_of_last_deployment.to_s)
         end
       end.flatten!.compact
@@ -27,8 +27,8 @@ class DeliveredStoriesReport
   end
 
   def print_stories
-    Rails.logger.info "\nDelivered stories updated since last deployment"
-    @new_stories.each {|story| Rails.logger.info "  " + story.name}
+    puts "\nDelivered stories updated since last deployment"
+    @new_stories.each {|story| puts "  " + story.name}
   end
 
   def email_report
