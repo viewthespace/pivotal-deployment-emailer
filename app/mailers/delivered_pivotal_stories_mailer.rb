@@ -1,10 +1,11 @@
 class DeliveredPivotalStoriesMailer < ActionMailer::Base
   default from: "no-reply@viewthespace.com"
 
-  def delivered_pivotal_stories_mailer new_stories, date_string
+  def delivered_pivotal_stories_mailer new_stories, date_string, version_name
     attach_images
     @new_stories = new_stories
     @time_of_last_deployment = DateTime.parse(date_string).strftime("%m/%d/%y")
+    @version_name = version_name
     mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Updates Since Last Deployment on #{@time_of_last_deployment}")
     #mail(to: 'me@hello.com' , subject: "Updates Since Last Deployment on #{@time_of_last_deployment}")
   end
