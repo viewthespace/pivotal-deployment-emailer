@@ -18,7 +18,7 @@ class DeliveredStoriesReport
   def time_of_last_deployment_string
     app_name = ENV["MAIN_APP_NAME"]
     heroku  = Heroku::API.new(:api_key => ENV["HEROKU_API_KEY"])
-    puts heroku.get_releases(app_name).body.last
+    @deployment_name = heroku.get_releases(app_name).body.last['name']
     @deployment_date = heroku.get_releases(app_name).body.last['created_at']
   end
 
@@ -32,7 +32,7 @@ class DeliveredStoriesReport
   end
 
   def email_report
-    DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, time_of_last_deployment_string).deliver!
+    DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, @deployment_date, @deployment_name).deliver!
   end
 
 end
