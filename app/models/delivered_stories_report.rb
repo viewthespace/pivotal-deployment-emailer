@@ -27,7 +27,7 @@ class DeliveredStoriesReport
   end
 
   def print_stories
-    Rails.logger.info "\nDelivered stories updated since last deployment"
+    Rails.logger.info "Delivered stories updated since last deployment:"
     @new_stories.each {|story| Rails.logger.info "  " + story.name}
   end
 
