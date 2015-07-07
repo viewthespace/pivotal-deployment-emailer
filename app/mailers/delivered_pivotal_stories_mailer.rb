@@ -11,7 +11,7 @@ class DeliveredPivotalStoriesMailer < ActionMailer::Base
     elsif ENV["BACKUP_EMAIL"].present?
       mail(to: ENV["BACKUP_EMAIL"],
            subject: "Production release #{@version_name} had no stories to report",
-           body: "No stories were marked as delivered by the most recent deployment (#{@version_name}) on #{@time_of_last_deployment}."\
+           body: "No stories were marked delivered by the most recent deployment (#{@version_name}) on #{@time_of_last_deployment}."\
            "You alone received this email because it was marked as the backup email on the pivotal-deployment-emailer app.")
     end
   end
