@@ -6,7 +6,13 @@ class DeliveredPivotalStoriesMailer < ActionMailer::Base
     @new_stories = new_stories
     @time_of_last_deployment = DateTime.parse(date_string).strftime("%m/%d/%y")
     @version_name = version_name
-    mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Updates Since Last Deployment on #{@time_of_last_deployment}")
+    if new_stories.present?
+      mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Production release #{@time_of_last_deployment} #{@version_name}")
+    elsif ENV["BACKUP_EMAIL"].present?
+      mail(to: ENV["BACKUP_EMAIL"],
+           subject: "Production release #{@version_name} had no stories to report",
+           body: "No stories were marked as delivered by the most recent deployment (#{@version_name}) on #{@time_of_last_deployment}")
+    end
   end
 
   def attach_images
