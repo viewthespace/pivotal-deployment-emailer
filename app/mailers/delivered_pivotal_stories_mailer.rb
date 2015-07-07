@@ -6,7 +6,7 @@ class DeliveredPivotalStoriesMailer < ActionMailer::Base
     @new_stories = new_stories
     @time_of_last_deployment = DateTime.parse(date_string).strftime("%m/%d/%y")
     @version_name = version_name
-    if new_stories.present?
+    if new_stories.nil?
       mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Production release #{@time_of_last_deployment} #{@version_name}")
     elsif ENV["BACKUP_EMAIL"].present?
       mail(to: ENV["BACKUP_EMAIL"],
