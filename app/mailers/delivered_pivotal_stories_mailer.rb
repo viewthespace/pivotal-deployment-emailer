@@ -1,11 +1,19 @@
 class DeliveredPivotalStoriesMailer < ActionMailer::Base
   default from: "no-reply@viewthespace.com"
 
-  def delivered_pivotal_stories_mailer new_stories, date_string
-    attach_images
+  def delivered_pivotal_stories_mailer new_stories, date_string, version_name
     @new_stories = new_stories
-    @time_of_last_deployment = DateTime.parse(date_string)
-    mail(to: ENV["EMAIL_RECIPIENT"] , subject: 'Updates Since Last Deployment')
+    @time_of_last_deployment = DateTime.parse(date_string).strftime("%m/%d/%y")
+    @version_name = version_name
+    if new_stories.present?
+      attach_images
+      mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Production release #{@time_of_last_deployment} #{@version_name}")
+    elsif ENV["BACKUP_EMAIL"].present?
+      mail(to: ENV["BACKUP_EMAIL"],
+           subject: "Production release #{@version_name} had no stories to report",
+           body: "No stories were marked as delivered by the most recent deployment (#{@version_name}) on #{@time_of_last_deployment}."\
+           "You alone received this email because it was marked as the backup email on the pivotal-deployment-emailer app.")
+    end
   end
 
   def attach_images
