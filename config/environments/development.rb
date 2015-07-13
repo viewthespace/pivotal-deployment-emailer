@@ -30,5 +30,6 @@ Rails.application.configure do
   Rails.logger = Logger.new(STDOUT)
   ActionMailer::Base.delivery_method = :smtp
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  ENV["REDISTOGO_URL"] = 'redis://username:password@my.host:6389'
 end
 
