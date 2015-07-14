@@ -16,9 +16,11 @@ class DeliveredStoriesReport
   end
 
   def time_of_last_report_string
-    @report_datetime = $redis.get('time_of_last_report')
-    $redis.set('time_of_last_report')
-    @report_datetime
+    REDIS.get('time_of_last_report')
+  end
+
+  def set_report_time
+    REDIS.get('time_of_last_report', Time.now.to_s)
   end
 
   def version_name
@@ -37,7 +39,7 @@ class DeliveredStoriesReport
   end
 
   def email_report
-    DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, @report_datetime, version_name).deliver!
+    DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, time_of_last_report_string, version_name).deliver!
   end
 
 end

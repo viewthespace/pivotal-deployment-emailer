@@ -5,5 +5,6 @@ task :email_delivered_stories => :environment do
   reporter.print_stories
   Rails.logger.info "Sending Email"
   reporter.email_report
+  reporter.set_report_time
   Rails.logger.info "Done"
 end
