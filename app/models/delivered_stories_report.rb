@@ -20,7 +20,7 @@ class DeliveredStoriesReport
   end
 
   def set_report_time
-    REDIS.get('time_of_last_report', Time.now.to_s)
+    REDIS.set('time_of_last_report', Time.now.to_s)
   end
 
   def version_name

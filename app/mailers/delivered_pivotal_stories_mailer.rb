@@ -7,7 +7,7 @@ class DeliveredPivotalStoriesMailer < ActionMailer::Base
     @version_name = version_name
     if new_stories.present?
       attach_images
-      mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Production release #{@time_of_last_report} #{@version_name}")
+      mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Production releases since #{@time_of_last_report} #{@version_name}")
     elsif ENV["BACKUP_EMAIL"].present?
       mail(to: ENV["BACKUP_EMAIL"],
            subject: "Production release #{@version_name} had no stories to report",
