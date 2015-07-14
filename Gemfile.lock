@@ -34,10 +34,6 @@ GEM
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
-    excon (0.45.3)
-    heroku-api (0.3.19)
-      excon (~> 0.38)
-      multi_json (~> 1.8)
     hike (1.2.3)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -112,7 +108,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  heroku-api
   pivotal-tracker
   rails (= 4.1.5)
   redis
