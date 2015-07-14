@@ -1,7 +1,7 @@
 class DeliveredStoriesReport
 
   def find_stories
-    time_of_last_deployment = DateTime.parse(time_of_last_deployment_string)
+    time_of_last_deployment = DateTime.parse(time_of_last_report_string)
     PivotalTracker::Client.token =  pivotal_api_token
     PivotalTracker::Client.use_ssl = true
     projects = PivotalTracker::Project.all
@@ -15,11 +15,18 @@ class DeliveredStoriesReport
       end.flatten!.compact
   end
 
-  def time_of_last_deployment_string
+  def time_of_last_report_string
+    REDIS.get('time_of_last_report')
+  end
+
+  def set_report_time
+    REDIS.set('time_of_last_report', Time.now.to_s)
+  end
+
+  def version_name
     app_name = ENV["MAIN_APP_NAME"]
     heroku  = Heroku::API.new(:api_key => ENV["HEROKU_API_KEY"])
-    @deployment_name = heroku.get_releases(app_name).body.last['name']
-    @deployment_date = heroku.get_releases(app_name).body.last['created_at']
+    heroku.get_releases(app_name).body.last['name']
   end
 
   def pivotal_api_token
@@ -32,7 +39,7 @@ class DeliveredStoriesReport
   end
 
   def email_report
-    DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, @deployment_date, @deployment_name).deliver!
+    DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, time_of_last_report_string, version_name).deliver!
   end
 
 end
