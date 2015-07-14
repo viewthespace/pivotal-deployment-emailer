@@ -1,17 +1,16 @@
 class DeliveredPivotalStoriesMailer < ActionMailer::Base
   default from: "no-reply@viewthespace.com"
 
-  def delivered_pivotal_stories_mailer new_stories, date_string, version_name
+  def delivered_pivotal_stories_mailer new_stories, date_string
     @new_stories = new_stories
     @time_of_last_report = DateTime.parse(date_string).strftime("%m/%d/%y")
-    @version_name = version_name
     if new_stories.present?
       attach_images
-      mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Production releases since #{@time_of_last_report} #{@version_name}")
+      mail(to: ENV["EMAIL_RECIPIENT"] , subject: "Production releases since #{@time_of_last_report}")
     elsif ENV["BACKUP_EMAIL"].present?
       mail(to: ENV["BACKUP_EMAIL"],
-           subject: "Production release #{@version_name} had no stories to report",
-           body: "No stories were marked as delivered by the most recent report (#{@version_name}) on #{@time_of_last_report}."\
+           subject: "No delivered stories since #{@time_of_last_report} to report",
+           body: "No stories were marked as delivered by the most recent report on #{@time_of_last_report}."\
            "You alone received this email because it was marked as the backup email on the pivotal-deployment-emailer app.")
     end
   end

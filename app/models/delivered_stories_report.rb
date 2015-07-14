@@ -23,12 +23,6 @@ class DeliveredStoriesReport
     REDIS.set('time_of_last_report', Time.now.to_s)
   end
 
-  def version_name
-    app_name = ENV["MAIN_APP_NAME"]
-    heroku  = Heroku::API.new(:api_key => ENV["HEROKU_API_KEY"])
-    heroku.get_releases(app_name).body.last['name']
-  end
-
   def pivotal_api_token
     @pivotal_api_token = ENV['TRACKER_TOKEN']
   end
@@ -39,7 +33,7 @@ class DeliveredStoriesReport
   end
 
   def email_report
-    DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, time_of_last_report_string, version_name).deliver!
+    DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, time_of_last_report_string).deliver!
   end
 
 end
