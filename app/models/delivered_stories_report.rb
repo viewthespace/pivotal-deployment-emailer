@@ -12,7 +12,7 @@ class DeliveredStoriesReport
           Rails.logger.info "Gathering stories for " + project.name
           project.stories.all(:state => 'delivered', :modified_since => time_of_last_deployment.to_s)
         end
-      end.flatten!.compact
+      end.flatten!.compact.reject{ |s| REDIS.sismember "reported_stories", s.id.to_s }
   end
 
   def time_of_last_report_string
@@ -21,6 +21,11 @@ class DeliveredStoriesReport
 
   def set_report_time
     REDIS.set('time_of_last_report', Time.now.to_s)
+  end
+
+
+  def set_reported_stories
+     REDIS.sadd("reported_stories", reported_story_ids) if reported_story_ids.any?
   end
 
   def pivotal_api_token
@@ -34,6 +39,12 @@ class DeliveredStoriesReport
 
   def email_report
     DeliveredPivotalStoriesMailer.delivered_pivotal_stories_mailer(@new_stories, time_of_last_report_string).deliver!
+  end
+
+  private
+
+  def reported_story_ids
+    @new_stories.collect(&:id)
   end
 
 end
